@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const resultsDiv = document.getElementById('results');
     const paginationDiv = document.getElementById('pagination');
     const searchButton = document.getElementById('search-button');
-    const translateButton = document.getElementById('translate-button');
 
     let currentPage = 1;
     let currentQuery = '';
@@ -16,12 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPage = 1;
         await fetchAndDisplayGIFs(currentQuery, currentPage);
     });
-
-    translateButton.addEventListener('click', async () => {
-        currentQuery = queryInput.value;
-        await fetchAndDisplayTranslation(currentQuery);
-    });
-
     async function fetchAndDisplayGIFs(query, page) {
         const limit = 9;
         const offset = (page - 1) * limit;
@@ -33,18 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
             setupPagination(data.pagination.total_count, page);
         } catch (error) {
             console.error('Error fetching GIFs:', error);
-        }
-    }
-
-    async function fetchAndDisplayTranslation(query) {
-        const url = `https://api.giphy.com/v1/gifs/translate?api_key=${apiKey}&s=${query}`;
-        try {
-            const response = await fetch(url);
-            const data = await response.json();
-            displayGIFs([data.data]);
-            paginationDiv.innerHTML = '';
-        } catch (error) {
-            console.error('Error fetching translation:', error);
         }
     }
 
